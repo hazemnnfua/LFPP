@@ -160,11 +160,157 @@ const DEMO = {
   ],
 };
 
-const REGLAMENTO_DEMO = `FORMATO: todos contra todos a una vuelta. Puntuación: victoria 3 pts, empate 1 pt, derrota 0 pts.
+const REGLAMENTO_DEMO = `⚽ REGLAMENTO DE PARTIDO — LFPP (1/6)
+2.1 Formato del partido
 
-SANCIONES: doble amarilla o roja directa = mínimo 1 jornada de suspensión.
+N1. El máximo de jugadores en cancha por equipo es 7. El mínimo para poder disputar el partido es 5. Si un equipo no reúne el mínimo de 5 jugadores a la hora pactada, se aplica protocolo de W.O.
 
-FICHAJES: el mercado abre 48h antes de cada jornada y cierra 2h antes del primer partido.
+Duración del partido: dos tiempos (definir minutos según formato del torneo/liga) con descanso intermedio.
+
+En caso de empate en fases eliminatorias: tiempo extra y, de persistir el empate, definición por penales (5 por equipo, luego muerte súbita).
+
+N2 / N23 — Pase al portero
+Si un jugador realiza un pase intencionado hacia atrás al portero y este lo controla con las manos → penal.
+Si el balón llega al portero por un rechace, despeje o desvío no intencionado (propio o rival) → saque de meta, sin sanción.
+
+N3 — Entrada con equipo completo
+Si un jugador entra a la cancha con el equipo ya completo (7 en cancha): amonestación (amarilla). Si con su entrada interfiere en una jugada clara de gol: tarjeta roja directa + gol si el árbitro lo determina (regla de ventaja).
+
+N4 — Jugadores en banca
+Todo jugador suplente debe permanecer en la banca designada. Incumplirlo: tarjeta amarilla.
+
+N5 — Insultos al árbitro
+El árbitro puede amonestar o expulsar según la gravedad, a su criterio, dejando constancia por escrito del motivo.
+
+N6 — Gol lag
+Si por problemas de lag el balón entra a portería en una jugada anómala, se marca gol anulado y saque de meta para el equipo afectado. El árbitro decide con base en su visión directa o clip de evidencia; en caso de duda, se recurre a VAR.
+
+⚽ REGLAMENTO DE PARTIDO — LFPP (2/6)
+N7 — Uniforme
+Todos los jugadores deben portar el uniforme/skin oficial del club. Incumplirlo puede derivar en detención del partido o amonestación.
+
+N8 — Morphs
+Se permite 1 morph por equipo como máximo. 2 morphs: amonestación a los jugadores involucrados. 3 o más: amonestación + posible sanción al club.
+
+N9 — Abandono
+Abandono sin avisar: el partido continúa normalmente. Abandono avisado: el juego se detiene y se otorgan 30 segundos para reanudar antes de continuar.
+
+N10 — Saque inicial
+En el saque inicial el balón debe pasarse (no puede dispararse directo a portería). Si no se cumple, se repite el saque; si vuelve a ocurrir, tarjeta amarilla al jugador que ejecuta el saque.
+
+N11 — Bugs/glitches
+Si un jugador se "buguea" (queda atascado por error del juego), se detiene el partido y se otorga balón libre al equipo afectado en el punto donde ocurrió el bug.
+
+N12 — Cambios de jugador
+Los cambios de jugador deben anunciarse al instante en el chat/voz, indicando claramente quién sale y quién entra.
+
+⚽ REGLAMENTO DE PARTIDO — LFPP (3/6)
+N13 — Sin rol asignado
+Participar sin rol asignado por la liga implica autowin (derrota automática) para el equipo infractor.
+
+N19 — Interrupción de jugadas
+Patear el balón durante la ejecución de un tiro libre, penal o córner del equipo rival: tarjeta amarilla por interrupción de jugada.
+
+N20 — Suplente en jugada de gol
+Un suplente que entra a la cancha durante una jugada clara de gol: tarjeta roja directa + posible sanción de liga de hasta 3 partidos.
+
+N21 — Invasión de cancha
+Si un espectador/aficionado invade la cancha: el árbitro detiene el juego, puede aplicar smite o ban al invasor, y se otorgan 2 tiros de esquina (botes) a favor del equipo afectado.
+
+N22 — Invasión en penal
+Invasión del área durante ejecución de un penal por más de 10 segundos: tarjeta amarilla a los infractores.
+
+Accesorios prohibidos
+Prohibido el uso de accesorios que cubran o dificulten la visibilidad de las piernas. El jugador debe cambiarlos/quitarlos antes del partido oficial; de lo contrario, tarjeta amarilla y posible sanción al club si el partido se disputó con la infracción.
+
+🟨🟥 FALTAS Y TARJETAS — LFPP (4/6)
+3.1 Criterio de tackle (fusión N14 + N24)
+
+N24. Si un jugador realiza un tackle y alcanza a tocar el balón primero, no se sanciona como falta, ni como penal si ocurre dentro del área.
+
+N14. Si el tackle no toca el balón y sí al rival, se considera falta y puede sancionarse con tarjeta amarilla según la intensidad y riesgo de la jugada.
+
+N18 — Acumulación de tackles
+Se cuentan los tackles por jugador durante todo el partido: al segundo tackle que resulte en falta, advertencia verbal del árbitro; al tercer tackle-falta, tarjeta amarilla obligatoria (o roja si la jugada fue temeraria/violenta).
+
+N16 — Falta en el área
+Falta cometida dentro del área propia: penal.
+
+N15 — Último defensor
+Si un atacante va solo hacia portería (sin más defensores entre él y el arco) y el último defensor comete falta para evitarlo: tarjeta roja directa.
+
+N17 — Rebote en pared
+Si el balón rebota en una pared del mapa y el portero lo toma con las manos, no se considera ni indirecto ni penal.
+
+🎯 DOGSO
+Se sanciona cuando: el atacante avanza hacia la portería con control del balón, está cerca del área o de la portería, y no hay defensores entre él y la portería (excepto el infractor).
+
+Siempre tarjeta roja + falta, sin importar amarillas previas. Puede sancionarse aunque el sistema marque "no foul". Dentro del área: penal + roja. Fuera del área: libre + roja.
+
+3.3 — Escala de tarjetas
+2 amarillas en el mismo partido = expulsión, sin reemplazo, respetando el mínimo de 5.
+3 amarillas acumuladas en partidos distintos de la misma fase/jornada = 1 partido de sanción automática.
+Roja directa = expulsión inmediata + mínimo 1 partido de sanción.
+El jugador expulsado no puede ser sustituido; el equipo sigue con uno menos si no baja del mínimo de 5.
+
+📐🔍 OFFSIDE, VAR Y ADMINS — LFPP (5/6)
+4. Fuera de juego (Offside)
+Un jugador está en fuera de juego si se encuentra 2 cuadros (studs/tiles) o más adelantado respecto al último defensor rival (sin contar al portero) al momento del pase.
+No hay offside en saque de meta, banda, córner, o en campo propio.
+Sanción: tiro libre indirecto en el punto del offside.
+No hay offside pasivo: si interfiere en la jugada (bloquea visión, disputa balón, etc.), se sanciona igual.
+
+5. Sistema VAR
+5.1 Cada equipo dispone de 2 solicitudes de VAR por partido. Acierto: no se descuenta. Error: se pierde una solicitud.
+5.2 Solo para: goles, penales, tarjetas rojas y errores de identidad de jugador.
+5.3 Se basa en clips grabados o repetición del árbitro. Sin evidencia clara, se mantiene la decisión original.
+5.4 El árbitro principal tiene la decisión final; no apelable en el momento, solo por ticket post-partido con evidencia adicional.
+
+6.1-6.4 — Jerarquía y árbitro
+Árbitro principal > Árbitro asistente/VAR > Admin de liga > Moderador de Discord.
+El árbitro debe estar presente antes del inicio; si no hay árbitro 15 min después de la hora pactada, los capitanes acuerdan uno neutral o reagendan con aprobación de un Admin.
+Debe grabar el partido completo.
+Ningún árbitro puede dirigir un partido de su propio club o uno con intereses declarados.
+
+6.5-6.8 — Potestades de admins
+Revisar decisiones arbitrales solo ante evidencia clara de error grave o mala fe.
+Aplicar sanciones disciplinarias fuera de cancha.
+Suspender temporalmente a un árbitro con parcialidad reiterada.
+Los admins no pueden dirigir partidos de su propio club salvo excepción del CEO.
+Toda sanción se registra en el canal correspondiente. Tickets: respuesta en 24-48h, si no, escalar al CEO.
+
+⚖️🧩 SANCIONES Y PROTOCOLOS ESPECIALES — LFPP (6/6)
+Tabla de sanciones
+• Amarilla (acumulación de 3): 1 partido de suspensión
+• Roja directa (falta de juego): 1-2 partidos
+• Roja por DOGSO: 2 partidos
+• Interferencia en jugada de gol (N20): hasta 3 partidos
+• Insultos al árbitro (leve): amonestación
+• Insultos al árbitro (grave): expulsión + 1-3 partidos
+• Insultos/burlas post-partido: sanción al club; reincidencia = expulsión del club
+• Más de 2 morphs: amonestación + posible sanción al club
+• Sin rol asignado: autowin en contra
+• Falsificación de contratos/ofertas: nulidad + sanción al club
+• Multicuenta: ban permanente + sanción al club
+• No presentarse (W.O.): derrota 3-0 administrativa
+• Fraude comprobado: pérdida del partido + posible expulsión del club
+
+10.1 — Lag individual
+Ver N6. Duda sobre gol por lag → se aplica VAR.
+
+10.2 — Caída general del servidor
+Si afecta a ambos equipos, el partido se reanuda desde el marcador y minuto exacto, en nuevo servidor, dentro de [definir, ej. 24h].
+
+10.3 — Walkover (W.O.)
+Tolerancia: 10-15 min. Sin mínimo de 5 jugadores → W.O. a favor del rival (ej. 3-0). Reincidencia: resta de puntos o expulsión.
+
+10.4 — Grabación obligatoria
+El árbitro o un jugador designado por equipo debe grabar el partido completo. Conservar mínimo 72 horas.
+
+10.5 — Suplantación (smurfing)
+Jugar con cuenta ajena sin autorización: autowin en contra + posible expulsión del jugador.
+
+Números entre corchetes deben ser fijados oficialmente por la liga. Última actualización: [fecha].
 
 (Reemplaza este texto editando la hoja "Reglamento" en Google Sheets)`;
 
