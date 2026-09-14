@@ -25,65 +25,26 @@ const needsZoom = nombre => ZOOM_LOGOS.has(nombre);
 
 // Avatares personalizados por jugador (ej. skin de Roblox) que tienen prioridad
 // sobre el logo del club en tarjetas como el MVP.
+//
+// IMPORTANTE sobre estas URLs: son las que devuelve la propia API de Roblox
+// (thumbnails.roblox.com/v1/users/avatar-headshot) para ese userId. No se
+// pueden generar solo con el userId al vuelo desde el navegador porque esa
+// API no tiene CORS habilitado y además bloquea trafico que no venga de un
+// navegador real (bloqueo anti-bot) — por eso el intento anterior de
+// resolverlo dinamicamente con un proxy no funcionaba. La URL de abajo, en
+// cambio, es la imagen final ya resuelta en el CDN de Roblox (tr.rbxcdn.com),
+// que si se puede usar directo en un <img src="..."> sin ningun problema.
+//
+// Esta URL se mantiene valida mientras el usuario no cambie su avatar/skin
+// en Roblox. Si en algun momento deja de verse, hay que volver a sacarla:
+// abre en el navegador
+//   https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=<ID>&size=180x180&format=Png&isCircular=false
+// y copia el valor de "imageUrl" de ahi.
 const PLAYER_AVATARS = {
-  "sayallyn502": 898870115,
+  "sayallyn502": "https://tr.rbxcdn.com/30DAY-AvatarHeadshot-A168205D53E9EBBB3A0E8465432EE2E4-Png/180/180/AvatarHeadshot/Png/noFilter",
 };
 
-const ROBLOX_AVATAR_CACHE_KEY = 'lfpp-roblox-avatar-cache-v1';
-const ROBLOX_AVATAR_CACHE_TTL = 12 * 60 * 60 * 1000;
-const robloxAvatarResolved = {};
-
-function loadRobloxAvatarCache(){
-  try{ return JSON.parse(localStorage.getItem(ROBLOX_AVATAR_CACHE_KEY)) || {}; }
-  catch(e){ return {}; }
-}
-function saveRobloxAvatarCache(cache){
-  try{ localStorage.setItem(ROBLOX_AVATAR_CACHE_KEY, JSON.stringify(cache)); }catch(e){}
-}
-
-const CORS_PROXIES = [
-  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
-];
-
-async function fetchRobloxHeadshot(userId){
-  const apiUrl = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
-  for(const buildProxyUrl of CORS_PROXIES){
-    try{
-      const res = await fetch(buildProxyUrl(apiUrl));
-      if(!res.ok) continue;
-      const json = await res.json();
-      const entry = json && json.data && json.data[0];
-      if(entry && entry.state === 'Completed' && entry.imageUrl) return entry.imageUrl;
-    }catch(e){ /* probar el siguiente proxy */ }
-  }
-  return null;
-}
-
-async function resolvePlayerAvatars(){
-  const cache = loadRobloxAvatarCache();
-  let cambiaronDatos = false;
-  const jobs = Object.entries(PLAYER_AVATARS).map(async ([jugador, userId])=>{
-    const cached = cache[jugador];
-    if(cached && (Date.now() - cached.ts) < ROBLOX_AVATAR_CACHE_TTL){
-      robloxAvatarResolved[jugador] = cached.url;
-      return;
-    }
-    const url = await fetchRobloxHeadshot(userId);
-    if(url){
-      robloxAvatarResolved[jugador] = url;
-      cache[jugador] = { url, ts: Date.now() };
-      cambiaronDatos = true;
-    } else if(cached){
-      robloxAvatarResolved[jugador] = cached.url;
-    }
-  });
-  await Promise.all(jobs);
-  if(cambiaronDatos) saveRobloxAvatarCache(cache);
-  try{ renderMvp(); }catch(e){ console.error('Error re-renderizando MVP con avatares:', e); }
-}
-
-function playerAvatarUrl(jugador){ return robloxAvatarResolved[jugador] || null; }
+function playerAvatarUrl(jugador){ return PLAYER_AVATARS[jugador] || null; }
 
 function logoHtml(nombre, size='sm'){
   const url = teamLogoUrl(nombre);
@@ -597,6 +558,5 @@ function initTheme(){
 document.addEventListener('DOMContentLoaded',()=>{
   initTabs(); initSearch(); initTheme();
   loadAll();
-  resolvePlayerAvatars();
   setInterval(loadAll,120000);
 });
