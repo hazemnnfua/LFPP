@@ -127,20 +127,22 @@ const DEMO = {
     {Jugador:"excalibursitosq3", Equipo:"Universitario", Asistencias:"1"},
     {Jugador:"sayallyn502",       Equipo:"Universitario", Asistencias:"2"},
   ],
-  vallas:[],
+  vallas:[
+    {Portero:"ggls1", Equipo:"Universitario", VallasInvictas:"3"},
+  ],
   tarjetas:[
     {Jugador:"sebas97100", Equipo:"Sport Huancayo", Amarillas:"0", Rojas:"1"},
   ],
   equipos:[
-    {Equipo:"Universitario",       Ciudad:"Lima",        DT:"", Fundacion:""},
-    {Equipo:"Los Chankas CyC",     Ciudad:"Andahuaylas", DT:"", Fundacion:""},
-    {Equipo:"Sport Boys",          Ciudad:"Lima",        DT:"", Fundacion:""},
-    {Equipo:"Sport Huancayo",      Ciudad:"Huancayo",    DT:"", Fundacion:""},
-    {Equipo:"Sporting Cristal",    Ciudad:"Lima",        DT:"", Fundacion:""},
-    {Equipo:"Comerciantes Unidos", Ciudad:"Cutervo",     DT:"", Fundacion:""},
-    {Equipo:"Cienciano",           Ciudad:"Cusco",       DT:"", Fundacion:""},
-    {Equipo:"FBC Melgar",          Ciudad:"Arequipa",    DT:"", Fundacion:""},
-    {Equipo:"AD Cantolao",         Ciudad:"Callao",      DT:"", Fundacion:""},
+    {Equipo:"Universitario",       Ciudad:"Lima",        DT:"", Fundacion:"2026"},
+    {Equipo:"Los Chankas CyC",     Ciudad:"Andahuaylas", DT:"martin990272", Fundacion:"2026"},
+    {Equipo:"Sport Boys",          Ciudad:"Lima",        DT:"xxmanuuxx_", Fundacion:"2026"},
+    {Equipo:"Sport Huancayo",      Ciudad:"Huancayo",    DT:"chris077192", Fundacion:"2026"},
+    {Equipo:"Sporting Cristal",    Ciudad:"Lima",        DT:"doue0430", Fundacion:"2026"},
+    {Equipo:"Comerciantes Unidos", Ciudad:"Cutervo",     DT:"chino.918_", Fundacion:"2026"},
+    {Equipo:"Cienciano",           Ciudad:"Cusco",       DT:"stefab3001_", Fundacion:"2026"},
+    {Equipo:"FBC Melgar",          Ciudad:"Arequipa",    DT:"_fragger._.", Fundacion:"2026"},
+    {Equipo:"AD Cantolao",         Ciudad:"Callao",      DT:"gagamaru_2010", Fundacion:"2026"},
   ],
   jugadores:[
     {Jugador:"excalibursitosq3", Equipo:"Universitario",  Posicion:"", PJ:"3", Goles:"3", Asistencias:"1"},
@@ -333,7 +335,7 @@ function renderStats(){
 
   const vallas=[...DATA.vallas].sort((a,b)=>num(b.VallasInvictas)-num(a.VallasInvictas));
   document.querySelector('#tabla-vallas tbody').innerHTML=vallas.map((r,i)=>
-    `<tr><td>${i+1}</td><td class="al">${r.Portero}</td><td class="al">${r.Equipo}</td><td><strong>${r.VallasInvictas}</strong></td></tr>`
+    `<tr><td>${i+1}</td><td class="al"><div class="equipo-cell">${logoHtml(r.Equipo,'xs')} ${r.Portero}</div></td><td class="al">${r.Equipo}</td><td><strong>${r.VallasInvictas}</strong></td></tr>`
   ).join('')||'<tr><td colspan="4">Sin datos aún.</td></tr>';
 
   const tarjetas=[...DATA.tarjetas].sort((a,b)=>(num(b.Rojas)*10+num(b.Amarillas))-(num(a.Rojas)*10+num(a.Amarillas)));
