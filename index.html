@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFPP — Liga Peruana | La Cueva Zuazua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/webp" href="assets/logo.webp">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-item">Temporada <strong id="temporada-actual">2026 — Apertura</strong></span>
+    <span class="topbar-sep">·</span>
+    <span class="topbar-item" id="topbar-next">Cargando próximo partido…</span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="crest"><img src="assets/logo.webp" alt="Escudo LFPP"></div>
+    <div class="brand-text">
+      <span class="brand-name">LFPP</span>
+      <span class="brand-sub">Liga Peruana · La Cueva Zuazua</span>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="inicio">Inicio</button>
+    <button class="tab-btn" data-tab="tabla">Tabla</button>
+    <button class="tab-btn" data-tab="stats">Estadísticas</button>
+    <button class="tab-btn" data-tab="equipos">Equipos</button>
+    <button class="tab-btn" data-tab="calendario">Calendario</button>
+    <button class="tab-btn" data-tab="fichajes">Fichajes</button>
+    <button class="tab-btn" data-tab="disciplina">Disciplina</button>
+    <button class="tab-btn" data-tab="galeria">Galería</button>
+    <button class="tab-btn" data-tab="reglamento">Reglamento</button>
+  </nav>
+  <div class="header-actions">
+    <button id="theme-toggle" class="icon-btn" title="Modo oscuro/claro">◐</button>
+    <a href="#" id="discord-link" class="discord-btn" target="_blank" rel="noopener">Discord</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- INICIO -->
+  <section class="tab-panel active" id="panel-inicio">
+    <div class="hero">
+      <div class="hero-score">
+        <span class="hero-score-label">Próximo partido</span>
+        <div class="hero-matchup" id="hero-matchup">Cargando…</div>
+        <div class="countdown" id="countdown">
+          <div class="cd-block"><span id="cd-d">00</span><small>días</small></div>
+          <div class="cd-block"><span id="cd-h">00</span><small>hrs</small></div>
+          <div class="cd-block"><span id="cd-m">00</span><small>min</small></div>
+          <div class="cd-block"><span id="cd-s">00</span><small>seg</small></div>
+        </div>
+      </div>
+      <div class="hero-side">
+        <h1>La cancha manda.<br>La tabla no miente.</h1>
+        <p>Resultados, estadísticas y toda la actividad de la Liga Peruana de La Cueva Zuazua, actualizada en vivo por la propia comunidad.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Tabla de posiciones</h2>
+          <button class="link-btn" data-goto="tabla">Ver completa →</button>
+        </div>
+        <div id="home-tabla-mini">Cargando…</div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>MVP de la jornada</h2>
+        </div>
+        <div id="mvp-card">Cargando…</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Últimos resultados</h2>
+        </div>
+        <div id="ultimos-resultados">Cargando…</div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Goleadores</h2>
+          <button class="link-btn" data-goto="stats">Ver todos →</button>
+        </div>
+        <div id="home-goleadores-mini">Cargando…</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Campeones históricos</h2></div>
+      <div id="campeones" class="campeones-row">Cargando…</div>
+    </div>
+  </section>
+
+  <!-- TABLA -->
+  <section class="tab-panel" id="panel-tabla">
+    <div class="panel-head"><h2>Tabla de posiciones</h2></div>
+    <div class="table-wrap">
+      <table class="data-table" id="tabla-completa">
+        <thead>
+          <tr>
+            <th>#</th><th class="al">Equipo</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>DG</th><th>Pts</th>
+          </tr>
+        </thead>
+        <tbody><tr><td colspan="10">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+    <p class="table-legend"><span class="dot verde"></span> Clasifica a playoffs &nbsp; <span class="dot rojo"></span> Zona de descenso</p>
+
+    <div class="panel-head" style="margin-top:2.5rem"><h2>Evolución en la tabla</h2></div>
+    <div class="panel">
+      <label class="field-label">Selecciona un equipo</label>
+      <select id="evo-equipo-select" class="select"></select>
+      <div class="chart-wrap"><canvas id="evo-chart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="tab-panel" id="panel-stats">
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head"><h2>Goleadores</h2></div>
+        <div class="table-wrap">
+          <table class="data-table" id="tabla-goleadores">
+            <thead><tr><th>#</th><th class="al">Jugador</th><th class="al">Equipo</th><th>Goles</th></tr></thead>
+            <tbody><tr><td colspan="4">Cargando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Asistencias</h2></div>
+        <div class="table-wrap">
+          <table class="data-table" id="tabla-asistencias">
+            <thead><tr><th>#</th><th class="al">Jugador</th><th class="al">Equipo</th><th>Asist.</th></tr></thead>
+            <tbody><tr><td colspan="4">Cargando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head"><h2>Vallas invictas</h2></div>
+        <div class="table-wrap">
+          <table class="data-table" id="tabla-vallas">
+            <thead><tr><th>#</th><th class="al">Portero</th><th class="al">Equipo</th><th>V.I.</th></tr></thead>
+            <tbody><tr><td colspan="4">Cargando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Tarjetas</h2></div>
+        <div class="table-wrap">
+          <table class="data-table" id="tabla-tarjetas">
+            <thead><tr><th class="al">Jugador</th><th class="al">Equipo</th><th>🟨</th><th>🟥</th></tr></thead>
+            <tbody><tr><td colspan="4">Cargando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPOS -->
+  <section class="tab-panel" id="panel-equipos">
+    <div class="panel-head">
+      <h2>Equipos</h2>
+      <input type="search" id="buscador-equipos" class="search-input" placeholder="Buscar equipo…">
+    </div>
+    <div id="equipos-grid" class="cards-grid">Cargando…</div>
+
+    <div class="panel-head" style="margin-top:2.5rem">
+      <h2>Jugadores</h2>
+      <input type="search" id="buscador-jugadores" class="search-input" placeholder="Buscar jugador (usuario de Roblox)…">
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="tabla-jugadores">
+        <thead><tr><th class="al">Jugador</th><th class="al">Equipo</th><th class="al">Posición</th><th>PJ</th><th>Goles</th><th>Asist.</th></tr></thead>
+        <tbody><tr><td colspan="6">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CALENDARIO -->
+  <section class="tab-panel" id="panel-calendario">
+    <div class="panel-head"><h2>Calendario / Fixture</h2></div>
+    <div id="calendario-jornadas">Cargando…</div>
+  </section>
+
+  <!-- FICHAJES -->
+  <section class="tab-panel" id="panel-fichajes">
+    <div class="panel-head"><h2>Mercado de fichajes</h2></div>
+    <div class="table-wrap">
+      <table class="data-table" id="tabla-fichajes">
+        <thead><tr><th class="al">Jugador</th><th class="al">Sale de</th><th class="al">Llega a</th><th class="al">Fecha</th><th class="al">Estado</th></tr></thead>
+        <tbody><tr><td colspan="5">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DISCIPLINA -->
+  <section class="tab-panel" id="panel-disciplina">
+    <div class="panel-head"><h2>Sanciones activas</h2></div>
+    <div class="table-wrap">
+      <table class="data-table" id="tabla-disciplina">
+        <thead><tr><th class="al">Jugador</th><th class="al">Equipo</th><th class="al">Motivo</th><th>Jornadas</th><th class="al">Estado</th></tr></thead>
+        <tbody><tr><td colspan="5">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section class="tab-panel" id="panel-galeria">
+    <div class="panel-head"><h2>Galería</h2></div>
+    <div id="galeria-grid" class="gallery-grid">Cargando…</div>
+  </section>
+
+  <!-- REGLAMENTO -->
+  <section class="tab-panel" id="panel-reglamento">
+    <div class="panel-head"><h2>Reglamento</h2></div>
+    <div class="panel reglamento-text" id="reglamento-content">Cargando…</div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>LFPP — Liga Peruana de La Cueva Zuazua. Hecho por la comunidad, para la comunidad.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
