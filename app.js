@@ -195,7 +195,10 @@ function renderTabla(){
   const select = document.getElementById('evo-equipo-select');
   select.innerHTML = rows.map(r=>`<option value="${r.Equipo}">${r.Equipo}</option>`).join('');
   select.onchange = ()=>renderEvoChart(select.value);
-  if(rows.length) renderEvoChart(rows[0].Equipo);
+  if(rows.length){
+    try{ renderEvoChart(rows[0].Equipo); }
+    catch(err){ console.error('Error renderizando el gráfico de evolución:', err); }
+  }
 }
 
 // ============================================================
@@ -203,6 +206,10 @@ function renderTabla(){
 // ============================================================
 let evoChartInstance = null;
 function renderEvoChart(equipo){
+  if(typeof Chart === 'undefined'){
+    console.warn('Chart.js no está disponible todavía (¿sin conexión a internet o CDN bloqueado?).');
+    return;
+  }
   // DATA.evolucion es un arreglo plano (Equipo,Jornada,Pts,DG) -- mismo
   // formato que tendría la hoja de Sheets. Filtramos por equipo y ordenamos.
   const historial = (DATA.evolucion||[])
@@ -451,9 +458,18 @@ function renderReglamento(){
 function render(){
   setText('temporada-actual',LFPP_CONFIG.temporada);
   document.getElementById('discord-link').href=LFPP_CONFIG.discordUrl;
-  renderTabla(); renderStats(); renderEquipos(); renderJugadores();
-  renderCalendario(); renderFichajes(); renderDisciplina();
-  renderGaleria(); renderCampeones(); renderMvp(); renderReglamento();
+  // Cada sección se renderiza en su propio try/catch para que un error en
+  // una (p.ej. si Chart.js tarda en cargar) no deje "Cargando…" al resto.
+  const secciones = [
+    ['tabla', renderTabla], ['stats', renderStats], ['equipos', ()=>renderEquipos()],
+    ['jugadores', ()=>renderJugadores()], ['calendario', renderCalendario],
+    ['fichajes', renderFichajes], ['disciplina', renderDisciplina],
+    ['galeria', renderGaleria], ['campeones', renderCampeones],
+    ['mvp', renderMvp], ['reglamento', renderReglamento],
+  ];
+  secciones.forEach(([nombre, fn])=>{
+    try{ fn(); }catch(err){ console.error(`Error renderizando "${nombre}":`, err); }
+  });
 }
 
 // ============================================================
