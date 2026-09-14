@@ -96,7 +96,14 @@ const DEMO = {
     {Equipo:"AD Cantolao",         Jornada:"2", Pts:"0", DG:"-13"},
     {Equipo:"AD Cantolao",         Jornada:"3", Pts:"1", DG:"-13"},
   ],
-  goleadores:[], asistencias:[],
+  goleadores:[
+    {Jugador:"excalibursitosq3", Equipo:"Universitario", Goles:"3"},
+    {Jugador:"sayallyn502",       Equipo:"Universitario", Goles:"3"},
+  ],
+  asistencias:[
+    {Jugador:"excalibursitosq3", Equipo:"Universitario", Asistencias:"1"},
+    {Jugador:"sayallyn502",       Equipo:"Universitario", Asistencias:"2"},
+  ],
   vallas:[],
   tarjetas:[
     {Jugador:"sebas97100", Equipo:"Sport Huancayo", Amarillas:"0", Rojas:"1"},
