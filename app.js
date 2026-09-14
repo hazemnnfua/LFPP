@@ -129,7 +129,7 @@ const DEMO = {
   ],
   galeria:[], campeones:[],
   mvp:[
-    {Jugador:"sayallyn502", Equipo:"Universitario", Jornada:"2", Motivo:"Hat-trick y 2 asistencias"},
+    {Jugador:"sayallyn502", Equipo:"Universitario", Jornada:"1", Motivo:"Hat-trick y 2 asistencias"},
     {Jugador:"xxxvxrnnn", Equipo:"", Jornada:"3", Motivo:"Golazo de mitad de cancha"},
   ],
 };
@@ -445,14 +445,16 @@ function renderCampeones(){
   }).join('')||'Aún no hay campeones registrados.';
 }
 function renderMvp(){
-  const mvp=DATA.mvp[DATA.mvp.length-1];
+  const ultimos = [...DATA.mvp].slice(-3).reverse(); // los 3 más recientes, del más nuevo al más viejo
   const el=document.getElementById('mvp-card');
-  if(!mvp){ el.innerHTML='Sin MVP registrado aún.'; return; }
-  const logo=teamLogoUrl(mvp.Equipo);
-  el.innerHTML=`<div class="mvp-card">
-    <div class="mvp-avatar">${logo?`<img src="${logo}" alt="${mvp.Equipo}" style="width:100%;height:100%;object-fit:contain;">`:initials(mvp.Jugador)}</div>
-    <div><div class="mvp-name">${mvp.Jugador}</div><div class="mvp-meta">${mvp.Equipo} · Jornada ${mvp.Jornada}</div><div class="mvp-meta">${mvp.Motivo||''}</div></div>
-  </div>`;
+  if(!ultimos.length){ el.innerHTML='Sin MVP registrado aún.'; return; }
+  el.innerHTML = ultimos.map(mvp=>{
+    const logo=teamLogoUrl(mvp.Equipo);
+    return `<div class="mvp-card">
+      <div class="mvp-avatar">${logo?`<img src="${logo}" alt="${mvp.Equipo}" style="width:100%;height:100%;object-fit:contain;">`:initials(mvp.Jugador)}</div>
+      <div><div class="mvp-name">${mvp.Jugador}</div><div class="mvp-meta">${mvp.Equipo} · Jornada ${mvp.Jornada}</div><div class="mvp-meta">${mvp.Motivo||''}</div></div>
+    </div>`;
+  }).join('<hr style="border:none;border-top:1px solid var(--linea);margin:.9rem 0;">');
 }
 function renderReglamento(){
   const url=LFPP_CONFIG.sheets.reglamento;
