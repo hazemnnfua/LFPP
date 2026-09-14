@@ -153,7 +153,10 @@ const DEMO = {
   disciplina:[
     {Jugador:"sebas97100", Equipo:"Sport Huancayo", Motivo:"Tarjeta roja", Jornadas:"1", Estado:"activa"},
   ],
-  galeria:[], campeones:[],
+  galeria:[
+    {ImagenURL:"assets/uni.png", Descripcion:"Universitario"},
+    {ImagenURL:"assets/uni2.png", Descripcion:"Universitario"},
+  ], campeones:[],
   mvp:[
     {Jugador:"sayallyn502", Equipo:"Universitario", Jornada:"1", Motivo:"Hat-trick y 2 asistencias"},
     {Jugador:"xxxvxrnnn", Equipo:"", Jornada:"3", Motivo:"Golazo de mitad de cancha"},
