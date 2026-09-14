@@ -70,23 +70,23 @@ const DEMO = {
   ],
   // Calendario simulado con jornadas 1-3 para que el gráfico de evolución funcione
   calendario: [
-    // Jornada 1
-    {Jornada:"1", Local:"Universitario",      Visita:"AD Cantolao",         GolesLocal:"10", GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-01"},
-    {Jornada:"1", Local:"Los Chankas CyC",    Visita:"FBC Melgar",           GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-01"},
-    {Jornada:"1", Local:"Sport Boys",         Visita:"Comerciantes Unidos",  GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-01"},
-    {Jornada:"1", Local:"Sport Huancayo",     Visita:"Cienciano",            GolesLocal:"1",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-01"},
-    {Jornada:"1", Local:"Sporting Cristal",   Visita:"Sin rival",            GolesLocal:"0",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-01"},
-    // Jornada 2 (Universitario ganó por default 3-0 a Melgar; el resto son partidos aproximados, pendientes de confirmar)
-    {Jornada:"2", Local:"Universitario",      Visita:"FBC Melgar",           GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-08"},
-    {Jornada:"2", Local:"AD Cantolao",        Visita:"Sporting Cristal",     GolesLocal:"0",  GolesVisita:"1",  Jugado:"si", Fecha:"2026-08-08"},
-    {Jornada:"2", Local:"Sport Boys",          Visita:"Sport Huancayo",       GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-08"},
-    {Jornada:"2", Local:"Comerciantes Unidos",Visita:"Los Chankas CyC",      GolesLocal:"0",  GolesVisita:"3",  Jugado:"si", Fecha:"2026-08-08"},
-    {Jornada:"2", Local:"Cienciano",          Visita:"Sin rival",            GolesLocal:"0",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-08"},
-    // Jornada 3 — partidos reales de la fecha
-    {Jornada:"3", Local:"Comerciantes Unidos", Visita:"Universitario",      GolesLocal:"0",  GolesVisita:"3",  Jugado:"si", Fecha:"2026-08-15"},
-    {Jornada:"3", Local:"Cienciano",           Visita:"Sport Boys",          GolesLocal:"2",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-08-15"},
-    {Jornada:"3", Local:"FBC Melgar",          Visita:"AD Cantolao",         GolesLocal:"1",  GolesVisita:"1",  Jugado:"si", Fecha:"2026-08-15"},
-    {Jornada:"3", Local:"Los Chankas CyC",     Visita:"Sport Huancayo",      GolesLocal:"",   GolesVisita:"",   Jugado:"no", Fecha:"2026-08-15"},
+    // Jornada 1 — 5 de septiembre
+    {Jornada:"1", Local:"Universitario",      Visita:"AD Cantolao",         GolesLocal:"10", GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-05"},
+    {Jornada:"1", Local:"Los Chankas CyC",    Visita:"FBC Melgar",           GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-05"},
+    {Jornada:"1", Local:"Sport Boys",         Visita:"Comerciantes Unidos",  GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-05"},
+    {Jornada:"1", Local:"Sport Huancayo",     Visita:"Cienciano",            GolesLocal:"1",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-05"},
+    {Jornada:"1", Local:"Sporting Cristal",   Visita:"Sin rival",            GolesLocal:"0",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-05"},
+    // Jornada 2 — 12 de septiembre (Universitario ganó por default 3-0 a Melgar; el resto son partidos aproximados, pendientes de confirmar)
+    {Jornada:"2", Local:"Universitario",      Visita:"FBC Melgar",           GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-12"},
+    {Jornada:"2", Local:"AD Cantolao",        Visita:"Sporting Cristal",     GolesLocal:"0",  GolesVisita:"1",  Jugado:"si", Fecha:"2026-09-12"},
+    {Jornada:"2", Local:"Sport Boys",          Visita:"Sport Huancayo",       GolesLocal:"3",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-12"},
+    {Jornada:"2", Local:"Comerciantes Unidos",Visita:"Los Chankas CyC",      GolesLocal:"0",  GolesVisita:"3",  Jugado:"si", Fecha:"2026-09-12"},
+    {Jornada:"2", Local:"Cienciano",          Visita:"Sin rival",            GolesLocal:"0",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-12"},
+    // Jornada 3 — 13 de septiembre (partidos reales de la fecha)
+    {Jornada:"3", Local:"Comerciantes Unidos", Visita:"Universitario",      GolesLocal:"0",  GolesVisita:"3",  Jugado:"si", Fecha:"2026-09-13"},
+    {Jornada:"3", Local:"Cienciano",           Visita:"Sport Boys",          GolesLocal:"2",  GolesVisita:"0",  Jugado:"si", Fecha:"2026-09-13"},
+    {Jornada:"3", Local:"FBC Melgar",          Visita:"AD Cantolao",         GolesLocal:"1",  GolesVisita:"1",  Jugado:"si", Fecha:"2026-09-13"},
+    {Jornada:"3", Local:"Los Chankas CyC",     Visita:"Sport Huancayo",      GolesLocal:"",   GolesVisita:"",   Jugado:"no", Fecha:"2026-09-13"},
   ],
   // Evolución jornada a jornada: Pts y DG acumulados al término de cada fecha.
   // Mismo formato que tendría la hoja de Sheets: una fila por equipo por jornada.
@@ -148,6 +148,14 @@ const DEMO = {
     {Jugador:"excalibursitosq3", Equipo:"Universitario",  Posicion:"", PJ:"3", Goles:"3", Asistencias:"1"},
     {Jugador:"sayallyn502",       Equipo:"Universitario",  Posicion:"", PJ:"3", Goles:"3", Asistencias:"2"},
     {Jugador:"sebas97100",        Equipo:"Sport Huancayo", Posicion:"", PJ:"3", Goles:"0", Asistencias:"0"},
+    {Jugador:"martin990272",      Equipo:"Los Chankas CyC",     Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
+    {Jugador:"xxmanuuxx_",        Equipo:"Sport Boys",          Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
+    {Jugador:"chris077192",       Equipo:"Sport Huancayo",      Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
+    {Jugador:"doue0430",          Equipo:"Sporting Cristal",    Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
+    {Jugador:"chino.918_",        Equipo:"Comerciantes Unidos", Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
+    {Jugador:"stefab3001_",       Equipo:"Cienciano",           Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
+    {Jugador:"_fragger._.",       Equipo:"FBC Melgar",          Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
+    {Jugador:"gagamaru_2010",     Equipo:"AD Cantolao",         Posicion:"DT", PJ:"", Goles:"", Asistencias:""},
   ],
   fichajes:[],
   disciplina:[
@@ -392,9 +400,17 @@ function renderTabla(){
 // RENDER: EVOLUCIÓN DE EQUIPO (gráfico mejorado)
 // ============================================================
 let evoChartInstance = null;
-function renderEvoChart(equipo){
+function renderEvoChart(equipo, intentos=0){
   if(typeof Chart === 'undefined'){
-    console.warn('Chart.js no está disponible todavía (¿sin conexión a internet o CDN bloqueado?).');
+    // Chart.js puede tardar en cargar (o estar usando el CDN de respaldo).
+    // Reintentamos por unos segundos antes de mostrar un aviso.
+    if(intentos < 20){
+      setTimeout(()=>renderEvoChart(equipo, intentos+1), 250);
+      return;
+    }
+    console.warn('Chart.js no se pudo cargar (revisa tu conexión o si algo está bloqueando los CDN).');
+    const wrap = document.querySelector('#panel-tabla .chart-wrap');
+    if(wrap) wrap.innerHTML = '<p style="padding:1rem;color:var(--texto-suave);">No se pudo cargar el gráfico (problema de conexión). Intenta recargar la página.</p>';
     return;
   }
   // DATA.evolucion es un arreglo plano (Equipo,Jornada,Pts,DG) -- mismo
@@ -517,7 +533,7 @@ function renderJugadores(filtro=''){
   const f=filtro.toLowerCase();
   const jugadores=DATA.jugadores.filter(j=>j.Jugador.toLowerCase().includes(f)||(j.Equipo||'').toLowerCase().includes(f));
   document.querySelector('#tabla-jugadores tbody').innerHTML=jugadores.map(j=>
-    `<tr><td class="al">${j.Jugador}</td><td class="al">${j.Equipo}</td><td class="al">${j.Posicion||'—'}</td><td>${j.PJ||0}</td><td>${j.Goles||0}</td><td>${j.Asistencias||0}</td></tr>`
+    `<tr><td class="al">${j.Jugador}</td><td class="al"><div class="equipo-cell">${logoHtml(j.Equipo,'xs')} ${j.Equipo}</div></td><td class="al">${j.Posicion||'—'}</td><td>${j.PJ||0}</td><td>${j.Goles||0}</td><td>${j.Asistencias||0}</td></tr>`
   ).join('')||'<tr><td colspan="6">No se encontraron jugadores.</td></tr>';
 }
 
@@ -679,6 +695,17 @@ function activateTab(tab){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+tab));
   window.scrollTo({top:0,behavior:'smooth'});
+  // El gráfico de evolución se crea mientras su panel está oculto (display:none),
+  // así que Chart.js lo calcula con tamaño 0 y queda en blanco para siempre.
+  // Al entrar a la pestaña "Tabla" forzamos un resize (y si aún no se creó, lo creamos).
+  if(tab==='tabla'){
+    const select=document.getElementById('evo-equipo-select');
+    if(evoChartInstance){
+      requestAnimationFrame(()=>evoChartInstance.resize());
+    } else if(select && select.value){
+      renderEvoChart(select.value);
+    }
+  }
 }
 
 // ============================================================
