@@ -119,12 +119,17 @@ const DEMO = {
     {Equipo:"FBC Melgar",          Ciudad:"Arequipa",    DT:"", Fundacion:""},
     {Equipo:"AD Cantolao",         Ciudad:"Callao",      DT:"", Fundacion:""},
   ],
-  jugadores:[], fichajes:[],
+  jugadores:[
+    {Jugador:"excalibursitosq3", Equipo:"Universitario", Posicion:"", PJ:"3", Goles:"3", Asistencias:"1"},
+    {Jugador:"sayallyn502",       Equipo:"Universitario", Posicion:"", PJ:"3", Goles:"3", Asistencias:"2"},
+  ],
+  fichajes:[],
   disciplina:[
     {Jugador:"sebas97100", Equipo:"Sport Huancayo", Motivo:"Tarjeta roja", Jornadas:"1", Estado:"activa"},
   ],
   galeria:[], campeones:[],
   mvp:[
+    {Jugador:"sayallyn502", Equipo:"Universitario", Jornada:"2", Motivo:"Hat-trick y 2 asistencias"},
     {Jugador:"xxxvxrnnn", Equipo:"", Jornada:"3", Motivo:"Golazo de mitad de cancha"},
   ],
 };
