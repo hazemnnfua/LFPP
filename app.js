@@ -23,6 +23,13 @@ const LOGOS = {
 function teamLogoUrl(nombre){ return LOGOS[nombre] || null; }
 const needsZoom = nombre => ZOOM_LOGOS.has(nombre);
 
+// Avatares personalizados por jugador (ej. skin de Roblox) que tienen prioridad
+// sobre el logo del club en tarjetas como el MVP.
+const PLAYER_AVATARS = {
+  "sayallyn502": "https://www.roblox.com/headshot-thumbnail/image?userId=898870115&width=150&height=150&format=png",
+};
+function playerAvatarUrl(jugador){ return PLAYER_AVATARS[jugador] || null; }
+
 function logoHtml(nombre, size='sm'){
   const url = teamLogoUrl(nombre);
   if(!url) return `<span class="logo-txt logo-${size}">${initials(nombre)}</span>`;
@@ -120,8 +127,9 @@ const DEMO = {
     {Equipo:"AD Cantolao",         Ciudad:"Callao",      DT:"", Fundacion:""},
   ],
   jugadores:[
-    {Jugador:"excalibursitosq3", Equipo:"Universitario", Posicion:"", PJ:"3", Goles:"3", Asistencias:"1"},
-    {Jugador:"sayallyn502",       Equipo:"Universitario", Posicion:"", PJ:"3", Goles:"3", Asistencias:"2"},
+    {Jugador:"excalibursitosq3", Equipo:"Universitario",  Posicion:"", PJ:"3", Goles:"3", Asistencias:"1"},
+    {Jugador:"sayallyn502",       Equipo:"Universitario",  Posicion:"", PJ:"3", Goles:"3", Asistencias:"2"},
+    {Jugador:"sebas97100",        Equipo:"Sport Huancayo", Posicion:"", PJ:"3", Goles:"0", Asistencias:"0"},
   ],
   fichajes:[],
   disciplina:[
@@ -314,7 +322,7 @@ function renderStats(){
 
   const tarjetas=[...DATA.tarjetas].sort((a,b)=>(num(b.Rojas)*10+num(b.Amarillas))-(num(a.Rojas)*10+num(a.Amarillas)));
   document.querySelector('#tabla-tarjetas tbody').innerHTML=tarjetas.map(r=>
-    `<tr><td class="al">${r.Jugador}</td><td class="al">${r.Equipo}</td><td>${r.Amarillas||0}</td><td>${r.Rojas||0}</td></tr>`
+    `<tr><td class="al"><div class="equipo-cell">${logoHtml(r.Equipo,'xs')} ${r.Jugador}</div></td><td class="al">${r.Equipo}</td><td>${r.Amarillas||0}</td><td>${r.Rojas||0}</td></tr>`
   ).join('')||'<tr><td colspan="4">Sin datos aún.</td></tr>';
 }
 
@@ -449,9 +457,11 @@ function renderMvp(){
   const el=document.getElementById('mvp-card');
   if(!ultimos.length){ el.innerHTML='Sin MVP registrado aún.'; return; }
   el.innerHTML = ultimos.map(mvp=>{
-    const logo=teamLogoUrl(mvp.Equipo);
+    const avatar = playerAvatarUrl(mvp.Jugador);
+    const logo = teamLogoUrl(mvp.Equipo);
+    const imgSrc = avatar || logo;
     return `<div class="mvp-card">
-      <div class="mvp-avatar">${logo?`<img src="${logo}" alt="${mvp.Equipo}" style="width:100%;height:100%;object-fit:contain;">`:initials(mvp.Jugador)}</div>
+      <div class="mvp-avatar">${imgSrc?`<img src="${imgSrc}" alt="${mvp.Jugador}" style="width:100%;height:100%;object-fit:cover;">`:initials(mvp.Jugador)}</div>
       <div><div class="mvp-name">${mvp.Jugador}</div><div class="mvp-meta">${mvp.Equipo} · Jornada ${mvp.Jornada}</div><div class="mvp-meta">${mvp.Motivo||''}</div></div>
     </div>`;
   }).join('<hr style="border:none;border-top:1px solid var(--linea);margin:.9rem 0;">');
