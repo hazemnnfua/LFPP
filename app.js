@@ -26,9 +26,64 @@ const needsZoom = nombre => ZOOM_LOGOS.has(nombre);
 // Avatares personalizados por jugador (ej. skin de Roblox) que tienen prioridad
 // sobre el logo del club en tarjetas como el MVP.
 const PLAYER_AVATARS = {
-  "sayallyn502": "https://www.roblox.com/headshot-thumbnail/image?userId=898870115&width=150&height=150&format=png",
+  "sayallyn502": 898870115,
 };
-function playerAvatarUrl(jugador){ return PLAYER_AVATARS[jugador] || null; }
+
+const ROBLOX_AVATAR_CACHE_KEY = 'lfpp-roblox-avatar-cache-v1';
+const ROBLOX_AVATAR_CACHE_TTL = 12 * 60 * 60 * 1000;
+const robloxAvatarResolved = {};
+
+function loadRobloxAvatarCache(){
+  try{ return JSON.parse(localStorage.getItem(ROBLOX_AVATAR_CACHE_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function saveRobloxAvatarCache(cache){
+  try{ localStorage.setItem(ROBLOX_AVATAR_CACHE_KEY, JSON.stringify(cache)); }catch(e){}
+}
+
+const CORS_PROXIES = [
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+];
+
+async function fetchRobloxHeadshot(userId){
+  const apiUrl = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
+  for(const buildProxyUrl of CORS_PROXIES){
+    try{
+      const res = await fetch(buildProxyUrl(apiUrl));
+      if(!res.ok) continue;
+      const json = await res.json();
+      const entry = json && json.data && json.data[0];
+      if(entry && entry.state === 'Completed' && entry.imageUrl) return entry.imageUrl;
+    }catch(e){ /* probar el siguiente proxy */ }
+  }
+  return null;
+}
+
+async function resolvePlayerAvatars(){
+  const cache = loadRobloxAvatarCache();
+  let cambiaronDatos = false;
+  const jobs = Object.entries(PLAYER_AVATARS).map(async ([jugador, userId])=>{
+    const cached = cache[jugador];
+    if(cached && (Date.now() - cached.ts) < ROBLOX_AVATAR_CACHE_TTL){
+      robloxAvatarResolved[jugador] = cached.url;
+      return;
+    }
+    const url = await fetchRobloxHeadshot(userId);
+    if(url){
+      robloxAvatarResolved[jugador] = url;
+      cache[jugador] = { url, ts: Date.now() };
+      cambiaronDatos = true;
+    } else if(cached){
+      robloxAvatarResolved[jugador] = cached.url;
+    }
+  });
+  await Promise.all(jobs);
+  if(cambiaronDatos) saveRobloxAvatarCache(cache);
+  try{ renderMvp(); }catch(e){ console.error('Error re-renderizando MVP con avatares:', e); }
+}
+
+function playerAvatarUrl(jugador){ return robloxAvatarResolved[jugador] || null; }
 
 function logoHtml(nombre, size='sm'){
   const url = teamLogoUrl(nombre);
@@ -460,8 +515,9 @@ function renderMvp(){
     const avatar = playerAvatarUrl(mvp.Jugador);
     const logo = teamLogoUrl(mvp.Equipo);
     const imgSrc = avatar || logo;
+    const onerrorFallback = logo ? `this.onerror=null;this.src='${logo}';` : `this.style.display='none';`;
     return `<div class="mvp-card">
-      <div class="mvp-avatar">${imgSrc?`<img src="${imgSrc}" alt="${mvp.Jugador}" style="width:100%;height:100%;object-fit:cover;">`:initials(mvp.Jugador)}</div>
+      <div class="mvp-avatar">${imgSrc?`<img src="${imgSrc}" alt="${mvp.Jugador}" style="width:100%;height:100%;object-fit:cover;" onerror="${onerrorFallback}">`:initials(mvp.Jugador)}</div>
       <div><div class="mvp-name">${mvp.Jugador}</div><div class="mvp-meta">${mvp.Equipo} · Jornada ${mvp.Jornada}</div><div class="mvp-meta">${mvp.Motivo||''}</div></div>
     </div>`;
   }).join('<hr style="border:none;border-top:1px solid var(--linea);margin:.9rem 0;">');
@@ -541,5 +597,6 @@ function initTheme(){
 document.addEventListener('DOMContentLoaded',()=>{
   initTabs(); initSearch(); initTheme();
   loadAll();
+  resolvePlayerAvatars();
   setInterval(loadAll,120000);
 });
