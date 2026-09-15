@@ -304,6 +304,16 @@ main{max-width:var(--maxw);margin:0 auto;padding:1.5rem;}
 }
 .pos-clasifica{background:rgba(46,139,87,.15);color:var(--verde);}
 .pos-descenso{background:rgba(200,16,46,.15);color:var(--rojo);}
+
+/* Píldora de cambio en el Ranking FIFA (▲/▼/=) — a diferencia de .pos-num,
+   su ancho se ajusta al texto en vez de ser un círculo fijo de 22px,
+   que quedaba descentrado al contener "▲ 2.5" en vez de un solo dígito. */
+.rank-change{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:.2rem .55rem;border-radius:20px;
+  font-weight:700;font-size:.78rem;white-space:nowrap;
+}
+.rank-change.neutro{background:rgba(91,91,96,.12);color:var(--texto-suave);}
 .table-legend{font-size:.8rem;color:var(--texto-suave);margin-top:.6rem;}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.3rem;}
 .dot.verde{background:var(--verde);}

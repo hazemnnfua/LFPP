@@ -562,12 +562,12 @@ function renderRanking(){
   document.querySelector('#tabla-ranking tbody').innerHTML = ordenado.map((r,i)=>{
     const cambioTxt = Math.round(r.cambio*10)/10;
     const flecha = cambioTxt > 0.05 ? `▲ ${cambioTxt}` : cambioTxt < -0.05 ? `▼ ${Math.abs(cambioTxt)}` : '=';
-    const flechaClass = cambioTxt > 0.05 ? 'pos-clasifica' : cambioTxt < -0.05 ? 'pos-descenso' : '';
+    const flechaClass = cambioTxt > 0.05 ? 'pos-clasifica' : cambioTxt < -0.05 ? 'pos-descenso' : 'neutro';
     return `<tr>
       <td>${i+1}</td>
       <td class="al"><div class="equipo-cell">${logoHtml(r.equipo,'xs')}<strong>${r.equipo}</strong></div></td>
       <td><strong>${Math.round(r.rating)}</strong></td>
-      <td><span class="pos-num ${flechaClass}">${flecha}</span></td>
+      <td><span class="rank-change ${flechaClass}">${flecha}</span></td>
     </tr>`;
   }).join('') || '<tr><td colspan="4">Sin datos aún.</td></tr>';
   animateIn('#tabla-ranking tbody tr');
