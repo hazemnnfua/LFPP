@@ -480,6 +480,145 @@ function renderEvoChart(equipo, intentos=0){
 }
 
 // ============================================================
+// RANKING FIFA (sistema tipo Elo)
+// ============================================================
+const ELO_INICIAL = 1000;
+const ELO_K = 32;
+
+function factorGol(dif){
+  if(dif<=1) return 1;
+  if(dif===2) return 1.5;
+  return 1.75 + (dif-3)/8;
+}
+
+// Recorre todos los partidos jugados en orden cronológico y devuelve:
+// { historial: {Equipo: [{jornada, fecha, rating}, ...]}, actual: {Equipo: rating}, cambios: {Equipo: delta desde la última jornada jugada} }
+function calcularEloRanking(){
+  const equipos = (DATA.tabla||[]).map(r=>r.Equipo);
+  const rating = {};
+  equipos.forEach(eq => rating[eq] = ELO_INICIAL);
+
+  const historial = {};
+  equipos.forEach(eq => historial[eq] = [{ jornada:'0', fecha:null, rating:ELO_INICIAL }]);
+
+  const jugados = (DATA.calendario||[])
+    .filter(p => p.Jugado==='si' && p.Local!=='Sin rival' && p.Visita!=='Sin rival' && rating.hasOwnProperty(p.Local) && rating.hasOwnProperty(p.Visita))
+    .sort((a,b)=> new Date(a.Fecha) - new Date(b.Fecha));
+
+  const cambios = {}; // delta de la última jornada jugada, por equipo
+  let ultimaJornada = null;
+
+  jugados.forEach(p=>{
+    const golesLocal = num(p.GolesLocal), golesVisita = num(p.GolesVisita);
+    const ratingLocal = rating[p.Local], ratingVisita = rating[p.Visita];
+
+    const eLocal = 1 / (1 + Math.pow(10, (ratingVisita - ratingLocal) / 400));
+    const eVisita = 1 - eLocal;
+
+    let sLocal;
+    if(golesLocal > golesVisita) sLocal = 1;
+    else if(golesLocal < golesVisita) sLocal = 0;
+    else sLocal = 0.5;
+    const sVisita = 1 - sLocal;
+
+    const dif = Math.abs(golesLocal - golesVisita);
+    const fg = factorGol(dif);
+
+    const deltaLocal = ELO_K * fg * (sLocal - eLocal);
+    const deltaVisita = ELO_K * fg * (sVisita - eVisita);
+
+    rating[p.Local] += deltaLocal;
+    rating[p.Visita] += deltaVisita;
+
+    historial[p.Local].push({ jornada:p.Jornada, fecha:p.Fecha, rating: rating[p.Local] });
+    historial[p.Visita].push({ jornada:p.Jornada, fecha:p.Fecha, rating: rating[p.Visita] });
+
+    if(ultimaJornada===null || p.Jornada===ultimaJornada || new Date(p.Fecha) >= new Date(jugados[jugados.length-1].Fecha)){
+      // se recalcula abajo con más precisión
+    }
+    ultimaJornada = p.Jornada;
+  });
+
+  // Cambio = diferencia entre el rating actual y el que tenía ANTES de la última jornada jugada
+  const jornadasOrdenadas = [...new Set(jugados.map(p=>p.Jornada))].sort((a,b)=>num(a)-num(b));
+  const ultimaJ = jornadasOrdenadas[jornadasOrdenadas.length-1];
+  equipos.forEach(eq=>{
+    const h = historial[eq];
+    const antes = [...h].reverse().find(pt => pt.jornada !== ultimaJ);
+    const ahora = rating[eq];
+    cambios[eq] = antes ? (ahora - antes.rating) : 0;
+  });
+
+  return { historial, actual: rating, cambios };
+}
+
+let rankingChartInstance = null;
+function renderRanking(){
+  const { historial, actual, cambios } = calcularEloRanking();
+  const equipos = Object.keys(actual);
+  const ordenado = equipos.map(eq => ({ equipo:eq, rating: actual[eq], cambio: cambios[eq]||0 }))
+    .sort((a,b) => b.rating - a.rating);
+
+  document.querySelector('#tabla-ranking tbody').innerHTML = ordenado.map((r,i)=>{
+    const cambioTxt = Math.round(r.cambio*10)/10;
+    const flecha = cambioTxt > 0.05 ? `▲ ${cambioTxt}` : cambioTxt < -0.05 ? `▼ ${Math.abs(cambioTxt)}` : '=';
+    const flechaClass = cambioTxt > 0.05 ? 'pos-clasifica' : cambioTxt < -0.05 ? 'pos-descenso' : '';
+    return `<tr>
+      <td>${i+1}</td>
+      <td class="al"><div class="equipo-cell">${logoHtml(r.equipo,'xs')}<strong>${r.equipo}</strong></div></td>
+      <td><strong>${Math.round(r.rating)}</strong></td>
+      <td><span class="pos-num ${flechaClass}">${flecha}</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="4">Sin datos aún.</td></tr>';
+  animateIn('#tabla-ranking tbody tr');
+
+  // Gráfico de evolución: una línea por equipo, eje X = jornadas jugadas
+  if(typeof Chart === 'undefined') return;
+  const jornadas = [...new Set(
+    Object.values(historial).flat().map(pt=>pt.jornada)
+  )].sort((a,b)=>num(a)-num(b));
+
+  const paleta = ['#C8102E','#C9A227','#2E6F40','#2D5DA1','#8E44AD','#D97706','#0E7490','#A3A3A3','#DB2777'];
+  const datasets = equipos.map((eq,i)=>{
+    const porJornada = {};
+    historial[eq].forEach(pt => porJornada[pt.jornada] = pt.rating);
+    // rellenar huecos (jornadas donde el equipo no jugó, ej. jornada con "Sin rival") con el último valor conocido
+    let ultimo = ELO_INICIAL;
+    const data = jornadas.map(j=>{
+      if(porJornada.hasOwnProperty(j)) ultimo = porJornada[j];
+      return Math.round(ultimo);
+    });
+    return {
+      label: eq,
+      data,
+      borderColor: paleta[i % paleta.length],
+      backgroundColor: 'transparent',
+      tension: .3,
+      pointRadius: 3,
+      pointHoverRadius: 6,
+      borderWidth: 2,
+    };
+  });
+
+  const ctx = document.getElementById('ranking-chart');
+  if(rankingChartInstance) rankingChartInstance.destroy();
+  rankingChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: { labels: jornadas.map(j => j==='0' ? 'Inicio' : 'J'+j), datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration:700, easing:'easeInOutQuart' },
+      plugins: { legend: { display:true, position:'bottom' } },
+      scales: {
+        y: { beginAtZero:false, ticks:{precision:0}, grid:{color:'rgba(128,128,128,.1)'}, title:{display:true,text:'Puntos Elo'} },
+        x: { grid:{display:false} }
+      }
+    }
+  });
+}
+
+// ============================================================
 // RENDER: STATS
 // ============================================================
 function renderStats(){
@@ -669,7 +808,7 @@ function render(){
   // Cada sección se renderiza en su propio try/catch para que un error en
   // una (p.ej. si Chart.js tarda en cargar) no deje "Cargando…" al resto.
   const secciones = [
-    ['tabla', renderTabla], ['stats', renderStats], ['equipos', ()=>renderEquipos()],
+    ['tabla', renderTabla], ['ranking', renderRanking], ['stats', renderStats], ['equipos', ()=>renderEquipos()],
     ['jugadores', ()=>renderJugadores()], ['calendario', renderCalendario],
     ['fichajes', renderFichajes], ['disciplina', renderDisciplina],
     ['galeria', renderGaleria], ['campeones', renderCampeones],
@@ -704,6 +843,13 @@ function activateTab(tab){
       requestAnimationFrame(()=>evoChartInstance.resize());
     } else if(select && select.value){
       renderEvoChart(select.value);
+    }
+  }
+  if(tab==='ranking'){
+    if(rankingChartInstance){
+      requestAnimationFrame(()=>rankingChartInstance.resize());
+    } else {
+      try{ renderRanking(); }catch(err){ console.error('Error renderizando el ranking FIFA:', err); }
     }
   }
 }

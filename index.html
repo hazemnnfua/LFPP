@@ -31,6 +31,7 @@
   <nav class="tabs" id="tabs">
     <button class="tab-btn active" data-tab="inicio">Inicio</button>
     <button class="tab-btn" data-tab="tabla">Tabla</button>
+    <button class="tab-btn" data-tab="ranking">Ranking FIFA</button>
     <button class="tab-btn" data-tab="stats">Estadísticas</button>
     <button class="tab-btn" data-tab="equipos">Equipos</button>
     <button class="tab-btn" data-tab="calendario">Calendario</button>
@@ -124,6 +125,29 @@
       <label class="field-label">Selecciona un equipo</label>
       <select id="evo-equipo-select" class="select"></select>
       <div class="chart-wrap"><canvas id="evo-chart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- RANKING FIFA -->
+  <section class="tab-panel" id="panel-ranking">
+    <div class="panel-head">
+      <h2>Ranking FIFA</h2>
+    </div>
+    <p class="table-legend" style="margin-bottom:1rem;">Sistema de puntos tipo Elo: subes o bajas según a quién le ganaste (o perdiste), no solo por el resultado. Ganarle a un rival con más puntos vale más que ganarle a uno más débil.</p>
+    <div class="table-wrap">
+      <table class="data-table" id="tabla-ranking">
+        <thead>
+          <tr>
+            <th>#</th><th class="al">Equipo</th><th>Puntos</th><th>Cambio</th>
+          </tr>
+        </thead>
+        <tbody><tr><td colspan="4">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="panel-head" style="margin-top:2.5rem"><h2>Evolución del ranking</h2></div>
+    <div class="panel">
+      <div class="chart-wrap"><canvas id="ranking-chart"></canvas></div>
     </div>
   </section>
 
